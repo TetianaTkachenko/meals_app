@@ -12,7 +12,7 @@ export default List;
 const styles = StyleSheet.create({
     listItem: {
         borderRadius: 6,
-        backgroundColor: '#e0c4fc',
+        backgroundColor: '#e4baa1',
         paddingHorizontal: 8,
         paddingVertical: 4,
         marginHorizontal: 12,
@@ -20,7 +20,7 @@ const styles = StyleSheet.create({
     },
     itemText: {
         textAlign: 'center',
-        color: '#2c0356',
+        color: '#351401',
         fontSize: 16
     }
 })

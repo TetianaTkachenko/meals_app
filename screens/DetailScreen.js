@@ -1,10 +1,11 @@
 import { useLayoutEffect } from 'react';
-import { Text, View, Image, StyleSheet, ScrollView, Button } from 'react-native';
+import { Text, View, Image, StyleSheet, ScrollView } from 'react-native';
 import List from '../components/details/List';
 import Subtitle from '../components/details/SubTitle';
 import IconButton from '../components/IconButton';
 import MealDetails from '../components/MealDetails';
 import { MEALS } from '../data/dummy-data';
+
 function DetailScreen({ route, navigation }) {
     const mealId = route.params.mealId
     const selectedMeal = MEALS.find(meal => meal.id === mealId)
@@ -15,7 +16,11 @@ function DetailScreen({ route, navigation }) {
     useLayoutEffect(() => {
         navigation.setOptions({
             headerRight: () => {
-                return <IconButton color='white' name='star' onPress={headerButtonPressHandler} />
+                return <IconButton 
+                    color='white' 
+                    name='star' 
+                    onPress={headerButtonPressHandler} 
+                />
             }
         })
     })
