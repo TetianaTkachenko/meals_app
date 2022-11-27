@@ -1,24 +1,25 @@
-import { useContext, useLayoutEffect } from 'react';
+import { useLayoutEffect } from 'react';
 import { Text, View, Image, StyleSheet, ScrollView } from 'react-native';
+import { useDispatch, useSelector } from 'react-redux';
 import List from '../components/details/List';
 import Subtitle from '../components/details/SubTitle';
 import IconButton from '../components/IconButton';
 import MealDetails from '../components/MealDetails';
 import { MEALS } from '../data/dummy-data';
-import { FavoritesContext } from '../store/context/favorites-context';
+import { addFavorite, removeFavorite } from '../store/redux/favorites';
 
 function DetailScreen({ route, navigation }) {
-    const favoriteMealsContext = useContext(FavoritesContext)
+    const dispatch = useDispatch()
+    const favoriteMealIds = useSelector((state) => state.favoriteMeals.ids)
     const mealId = route.params.mealId
     const selectedMeal = MEALS.find(meal => meal.id === mealId)
+    const mealIsFavorite = favoriteMealIds.includes(mealId)
 
-    const mealIsFavorite = favoriteMealsContext.ids.includes(mealId)
-
-    function changeFavotitestatusHandler() {
+    function changeFavoritestatusHandler() {
         if(mealIsFavorite) {
-            favoriteMealsContext.removeFavorite(mealId)
+            dispatch(removeFavorite({ id: mealId }))
         } else {
-            favoriteMealsContext.addFavorite(mealId)
+            dispatch(addFavorite({ id: mealId }))
         }
     }
     useLayoutEffect(() => {
@@ -27,11 +28,11 @@ function DetailScreen({ route, navigation }) {
                 return <IconButton 
                     color='white' 
                     name={ mealIsFavorite ? 'star' : 'star-outline' }
-                    onPress={changeFavotitestatusHandler} 
+                    onPress={changeFavoritestatusHandler} 
                 />
             }
         })
-    }, [changeFavotitestatusHandler, mealId ])
+    }, [changeFavoritestatusHandler, mealId ])
 
     useLayoutEffect(() => {
         const mealTitle = MEALS.find(
@@ -44,7 +45,9 @@ function DetailScreen({ route, navigation }) {
     return (
         <ScrollView style={styles.rootContainer}>
             <Image style={styles.image} source={{ uri: selectedMeal.imageUrl }} />
-            <Text style={styles.title}>{selectedMeal.title}</Text>
+            <Text style={styles.title}>
+                {selectedMeal.title}
+            </Text>
             <MealDetails 
                 complexity={selectedMeal.complexity}
                 affordability={selectedMeal.affordability}
